@@ -62,4 +62,4 @@ def loadToken(ruta):
         return token.get('token')
 
 
-client.run(loadToken('settings.json'))
+client.run(loadToken('token.json'))
