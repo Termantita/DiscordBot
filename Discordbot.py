@@ -17,6 +17,7 @@ from commands.Login_Register import QueryCog
 from commands.Delete_db_functions import DbCog
 from commands.Youtube_query import QYoutubeCog
 from commands.Sv_info import SvInfoCog
+from commands.talk_to_dm import TalktoDMCog
 
 dev_mode = False
 
@@ -36,6 +37,7 @@ client.add_cog(GeneratorCog(client))
 client.add_cog(McCog(client))
 client.add_cog(QYoutubeCog(client))
 client.add_cog(SvInfoCog(client))
+client.add_cog(TalktoDMCog(client))
 
 
 @client.event
@@ -54,6 +56,25 @@ if len(argv) != 1:
 async def dev_mode(ctx):
     if dev_mode:
         await ctx.send('Bot is currently in developer mode.')
+
+
+msg_id = ''
+
+
+@client.command(name='reaction')
+async def reaction_add(ctx):
+    global msg_id
+    await ctx.message.add_reaction('😺')
+    msg_id = ctx.message.id
+
+
+@client.command(name='check')
+async def check_reactions(ctx):
+    async for message in ctx.channel.history(limit=5):
+        if message.id == msg_id:
+            await ctx.send('Encontre el mensaje.')
+            for reaction in message.reactions:
+                await ctx.send(f'{reaction.emoji} tiene {reaction.count} reacciones ')
 
 
 def loadToken(ruta):
