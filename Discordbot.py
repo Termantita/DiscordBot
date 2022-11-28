@@ -2,6 +2,7 @@ import json
 from os import system
 from discord.ext import commands
 from sys import argv
+import discord
 
 # Import commands from commands folder
 from commands.Key_Generator import GeneratorCog
@@ -21,7 +22,7 @@ from commands.talk_to_dm import TalktoDMCog
 
 dev_mode = False
 
-client = commands.Bot(command_prefix='t!', description='Use t! for my commands!. t!commands for all commands.')
+client = commands.Bot(command_prefix='t!', description='Use t! for my commands!. t!commands for all commands.', intents=discord.Intents.default())
 
 # Initialize imported commands
 client.add_cog(LoopCog(client))
@@ -39,11 +40,21 @@ client.add_cog(QYoutubeCog(client))
 client.add_cog(SvInfoCog(client))
 client.add_cog(TalktoDMCog(client))
 
+bot_version = '1.0.0'
+bot_owner = '780226351419621446'
+
 
 @client.event
 async def on_ready():
     system('cls')
     print('Bot successfully started!\n')
+
+
+@client.event
+async def on_message(message: discord.Message):
+    for mention in message.mentions:
+        if mention.name == 'Terma':
+            await message.channel.send('He is AFK!')
 
 
 if len(argv) != 1:
@@ -64,7 +75,7 @@ msg_id = ''
 @client.command(name='reaction')
 async def reaction_add(ctx):
     global msg_id
-    await ctx.message.add_reaction('😺')
+    await ctx.message.add_reaction('🐱')
     msg_id = ctx.message.id
 
 
